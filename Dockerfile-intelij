@@ -1,0 +1,16 @@
+FROM local_ubuntu_turbovnc_fluxbox2
+
+ENV INTELLIJ_VERSION 2022.1
+#RUN apt-get install -y --no-install-recommends openjdk-8-jdk && \
+RUN   mkdir /home/intellij 
+   # chown -R intellij:intellij /home/intellij 
+COPY ideaIC-2022.1.tar.gz /home/intellij/
+RUN cd /home/intellij && \ 
+    tar xzvf ideaIC-2022.1.tar.gz && \
+    rm idea*.tar.gz && \
+    mv /home/intellij/idea* /home/intellij/idea
+# RUN unset DISPLAY
+    
+
+
+CMD /opt/TurboVNC/bin/vncserver && websockify -D --web=/usr/share/novnc/ 80 localhost:5901 && export DISPLAY=:1 && ls  && /home/intellij/idea/bin/idea.sh  && tail -f /dev/null
